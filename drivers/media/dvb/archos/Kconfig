@@ -1,0 +1,11 @@
+menu "Archos DVB Adapters"
+	depends on DVB_CORE
+
+config DVB_ARCHOSDIB7070P
+	tristate "Archos DiB7070P"
+	depends on DVB_CORE && I2C
+	select VIDEO_BUF_DVB
+	select VIDEO_OMAP34XX_ARCDVB
+	help
+	  Archos DVB DiB7070P Adapter 
+endmenu

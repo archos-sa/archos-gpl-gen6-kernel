@@ -1,0 +1,177 @@
+comment "OMAP Core Type"
+	depends on ARCH_OMAP2
+
+config ARCH_OMAP24XX
+	bool "OMAP24xx Based System"
+	depends on ARCH_OMAP2
+
+config ARCH_OMAP34XX
+	bool "OMAP34xx Based System"
+	depends on ARCH_OMAP3
+
+config ARCH_OMAP2420
+	bool "OMAP2420 support"
+	depends on ARCH_OMAP24XX
+	select OMAP_DM_TIMER
+	select ARCH_OMAP_OTG
+
+config ARCH_OMAP2430
+	bool "OMAP2430 support"
+	depends on ARCH_OMAP24XX
+
+config ARCH_OMAP3430
+	bool "OMAP3430 support"
+	depends on ARCH_OMAP3 && ARCH_OMAP34XX
+
+config OMAP3430_ES2
+	bool "OMAP3430 ES2 support"
+	depends on ARCH_OMAP3 && ARCH_OMAP34XX
+	default y
+
+config ARCH_OMAP3410
+	bool "OMAP3410 support"
+	depends on ARCH_OMAP3 && ARCH_OMAP34XX && OMAP3430_ES2
+	
+comment "OMAP Board Type"
+	depends on ARCH_OMAP2 || ARCH_OMAP3
+
+config MACH_OMAP_GENERIC
+	bool "Generic OMAP board"
+	depends on ARCH_OMAP2 && ARCH_OMAP24XX
+
+config MACH_NOKIA_N800
+	bool "Nokia N800"
+	depends on ARCH_OMAP24XX
+
+config MACH_OMAP2_TUSB6010
+	bool
+	depends on ARCH_OMAP2 && ARCH_OMAP2420
+	default y if MACH_NOKIA_N800
+
+config MACH_OMAP_H4
+	bool "OMAP 2420 H4 board"
+	depends on ARCH_OMAP2 && ARCH_OMAP24XX
+	select OMAP_DEBUG_DEVICES
+	select GPIOEXPANDER_OMAP
+
+config MACH_OMAP_3430SDP
+	bool "OMAP 3430 SDP board"
+	depends on ARCH_OMAP3 && ARCH_OMAP34XX
+
+config MACH_OMAP3_EVM
+	bool "OMAP3 EVM board"
+        depends on ARCH_OMAP3 && ARCH_OMAP34XX
+
+config MACH_OMAP_H4_TUSB
+	bool "TUSB 6010 EVM board"
+	depends on MACH_OMAP_H4
+	select MACH_OMAP2_TUSB6010
+	help
+	  Set this if you've got a TUSB6010 high speed USB board.
+	  You may need to consult the schematics for your revisions
+	  of the Menelaus and TUSB boards, and make changes to be
+	  sure this is set up properly for your board stack.
+
+	  Be sure to select OTG mode operation, not host-only or
+	  peripheral-only.
+
+config MACH_OMAP_H4_OTG
+	bool "Use USB OTG connector, not device connector (S1.10)"
+	depends on MACH_OMAP_H4
+	help
+	  Set this if you've set S1.10 (on the mainboard) to use the
+	  Mini-AB (OTG) connector and OTG transceiver with the USB0
+	  port, instead of the Mini-B ("download") connector with its
+	  non-OTG transceiver.
+
+	  Note that the "download" connector can be used to bootstrap
+	  the system from the OMAP mask ROM.  Also, since this is a
+	  development platform, you can also force the OTG port into
+	  a non-OTG operational mode.
+
+config MACH_OMAP2_H4_USB1
+	bool "Use USB1 port, not UART2 (S3.3)"
+	depends on MACH_OMAP_H4
+	help
+	  Set this if you've set SW3.3 (on the CPU card) so that the
+	  expansion connectors receive USB1 signals instead of UART2.
+
+config MACH_OMAP_APOLLON
+	bool "OMAP 2420 Apollon board"
+	depends on ARCH_OMAP2 && ARCH_OMAP24XX
+
+config MACH_OMAP_APOLLON_PLUS
+	bool "OMAP 2420 Apollon Plus board"
+	select MACH_OMAP_APOLLON
+	help
+	  It contains more LEDs, SWs, and so on
+
+	  Note that it is only tested with version 1.1 and more
+	  We have to test the version 1.0
+
+config MACH_OMAP_2430SDP
+	bool "OMAP 2430 SDP board"
+	depends on ARCH_OMAP2 && ARCH_OMAP24XX
+
+config MACH_ARCHOS_G6S
+	bool "ARCHOS G6S support"
+	depends on ARCH_OMAP3 && ARCH_OMAP34XX && OMAP3430_ES2
+
+config MACH_ARCHOS_G6H
+	bool "ARCHOS G6H support"
+	depends on ARCH_OMAP3 && ARCH_OMAP34XX && OMAP3430_ES2
+
+config MACH_ARCHOS_G6PLUS
+	bool "ARCHOS G6PLUS support"
+	depends on ARCH_OMAP3 && ARCH_OMAP34XX && OMAP3430_ES2
+
+config MACH_ARCHOS_G6L
+	bool "ARCHOS G6L support"
+	depends on ARCH_OMAP3 && ARCH_OMAP34XX && OMAP3430_ES2
+
+config MACH_ARCHOS_G6TV
+	bool "ARCHOS G6TV support"
+	depends on ARCH_OMAP3 && ARCH_OMAP34XX && OMAP3430_ES2
+
+config MACH_ARCHOS_G6
+	bool
+	default MACH_ARCHOS_G6S || MACH_ARCHOS_G6H || MACH_ARCHOS_G6PLUS || MACH_ARCHOS_G6L || MACH_ARCHOS_G6TV
+
+config ARCHOSG6_FIXUP
+	bool "Fixup machine description of Archos Gen6"
+	depends on MACH_ARCHOS_G6
+	default y if MACH_ARCHOS_G6
+
+config TPS65023
+	bool "TPS65023 Power Management chip"
+	default MACH_ARCHOS_G6
+	help
+	  If you say yes here you get support for the TPS65023 series of
+	  Power Management chips.  These include voltage regulators and other
+	  features that are often used in portable devices like cell phones
+	  and cameras.
+
+config FIQ
+	bool "Enable Fast Interrupt Support for OMAP3"
+	depends on ARCH_OMAP3 && ARCH_OMAP34XX
+	default n
+	help
+	  Configure Fast Interrupt Support
+
+config OMAP3_IRBLASTER_ON_FIQ
+	bool "Control irblaster with FIQ"
+	depends on FIQ
+	default n
+	help
+	  Select this option if you want to controle irblaster with FIQ
+
+config MACH_OMAP3_IRRGPT9
+	bool "Initialization GP Timer9 by dmtimer for IR remote driver"
+	depends on INPUT_ARCHOSGEN6_IR
+
+config IRBLASTER_G6
+	bool "PWM and Irblaster timer level functions"
+	default n
+	depends on MACH_ARCHOS_G6 || MACH_OMAP_3430SDP
+
+

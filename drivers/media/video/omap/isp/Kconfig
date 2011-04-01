@@ -1,0 +1,3 @@
+config VIDEO_OMAP34XX_ISP
+	tristate "omap isp driver"
+	depends on ARCH_OMAP34XX 

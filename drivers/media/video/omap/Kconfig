@@ -1,0 +1,92 @@
+menu "OMAP16xx V4L2 drivers"
+	depends on VIDEO_DEV && ARCH_OMAP16XX
+config VIDEO_OMAP_CAMERA
+	tristate "OMAP Camera support (EXPERIMENTAL)"
+	select VIDEO_BUF
+	depends on VIDEO_DEV && (ARCH_OMAP16XX || ARCH_OMAP24XX)
+	help
+	  V4L2 camera driver support for OMAP1/2 based boards.
+	
+config VIDEO_CAMERA_SENSOR_OV9640
+	tristate "OV9640 sensor support"
+	depends on VIDEO_OMAP_CAMERA
+	help
+	  OmniVision 9640 camera sensor support
+endmenu
+
+menu "OMAP2/OMAP3 V4L2 drivers"
+	depends on VIDEO_DEV && (ARCH_OMAP24XX || ARCH_OMAP34XX)
+
+config VIDEO_OMAP24XX_VIDEOLIB
+	tristate "Video out library"
+
+config VIDEO_OMAP_RESZ
+	tristate "Omap Image Resizer"
+	help
+	  Support for Omap3430 builtin Image Resizer module
+
+	  To compile this driver a s a module, choose M here: the
+	  module will be called omap-resz.
+
+config VIDEO_OMAP_IMGDMA
+	tristate "Omap Image DMA"
+	default m
+	help
+	  Support for fast 2D Image DMA using EDMA3 controller
+
+	  To compile this driver a s a module, choose M here: the
+	  module will be called omap-imgdma.
+
+config VIDEO_OMAP24XX_VIDEOOUT
+	tristate "Video out driver"
+	depends on VIDEO_OMAP24XX_VIDEOLIB
+	select VIDEO_BUF
+
+config VIDEO_OMAP24XX_TVOUT
+	bool "TV out support"
+
+config VIDEO_OMAP24XX_CAMERA
+	tristate "Camera driver"
+	depends on VIDEO_OMAP24XX_VIDEOLIB && ARCH_OMAP24XX 
+	select VIDEO_BUF
+
+config VIDEO_OMAP34XX_CAMERA
+	tristate "Camera driver"
+	depends on VIDEO_OMAP24XX_VIDEOLIB && ARCH_OMAP34XX 
+	select VIDEO_BUF
+
+config VIDEO_OMAP34XX_ARCDVB
+	tristate "Archos DVB CCDC Driver"
+	depends on VIDEO_OMAP24XX_VIDEOLIB && ARCH_OMAP34XX 
+	select VIDEO_BUF
+
+config VIDEO_OMAP34XX_DVR
+	tristate "Video decoder driver"
+	depends on VIDEO_OMAP24XX_VIDEOLIB && ARCH_OMAP34XX
+	select VIDEO_BUF
+
+config VIDEO_OMAP_SENSOR_MT9D111
+	tristate "Micron mt9d111 (EX3691) ISP sensor driver"
+	depends on ARCH_OMAP2430 || ARCH_OMAP34XX  
+
+config VIDEO_OMAP_SENSOR_MT9T012
+	tristate "Micron mt9t012 raw sensor driver (3MP)"
+	depends on ARCH_OMAP34XX  && !OMAP3430_ES2
+	default y
+
+config VIDEO_OMAP_SENSOR_MT9P012
+	tristate "Micron mt9p012 raw sensor driver (5MP)"
+	depends on ARCH_OMAP34XX && OMAP3430_ES2
+	default y
+
+config VIDEO_OMAP_AF_D88
+	tristate "Auto Focus driver coil D88"
+	depends on ARCH_OMAP34XX && VIDEO_OMAP_SENSOR_MT9P012 && OMAP3430_ES2
+	default y
+	
+
+source "drivers/media/video/omap/isp/Kconfig"
+source "drivers/media/video/omap/gci/Kconfig"
+endmenu
+
+

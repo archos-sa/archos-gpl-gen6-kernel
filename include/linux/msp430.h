@@ -1,0 +1,71 @@
+
+#ifndef _LINUX_ATMEGA_H
+#define _LINUX_ATMEGA_H
+
+struct  atmega_exchange_table {
+        unsigned long	value;
+        unsigned char	control_byte;
+        unsigned char	padding1;
+        unsigned char	padding2;
+        unsigned char	magic;
+};
+
+// MSP CMD register bit mask
+#define  ATMEGA_I2C_CTRL_CMD_NONE		0
+#define  ATMEGA_I2C_CTRL_CMD_SET_RTC		1
+#define  ATMEGA_I2C_CTRL_CMD_SET_ALARM		2
+#define  ATMEGA_I2C_CTRL_CMD_SLEEP		3
+#define  ATMEGA_I2C_CTRL_CMD_NOT_USED		4
+#define  ATMEGA_I2C_CTRL_CMD_RESET_ALARM	5
+#define  ATMEGA_I2C_CTRL_CMD_RESET_DAVINCI	6
+#define  ATMEGA_I2C_CTRL_CMD_SHUTDOWN		7
+#define  ATMEGA_I2C_CTRL_CMD_CHARGEMODE		8	
+#define  ATMEGA_I2C_CTRL_CMD_CHG_LED_TOGGLE	9	
+
+// MSP charge mode value
+#define CHARGER_OFF	0x000
+#define	CHARGER_ON_LOW	0x200
+#define CHARGER_ON_HIGH	0x300
+
+#define  ATMEGA_I2C_COMMAND_MAGIC		0x5a
+
+// MSP read registers
+#define  ATMEGA_I2C_READ_REG_BASE		0x00
+#define  ATMEGA_I2C_TIME_REG			ATMEGA_I2C_READ_REG_BASE
+#define  ATMEGA_I2C_TIME_SIZE			4
+#define  ATMEGA_I2C_BOARDID_REG			( ATMEGA_I2C_TIME_REG + ATMEGA_I2C_TIME_SIZE )
+#define  ATMEGA_I2C_BOARDID_SIZE		2
+#define  ATMEGA_I2C_VERSION_REG			( ATMEGA_I2C_BOARDID_REG + ATMEGA_I2C_BOARDID_SIZE )
+#define  ATMEGA_I2C_VERSION_SIZE		2
+#define  ATMEGA_I2C_STATUS_REG			( ATMEGA_I2C_VERSION_REG + ATMEGA_I2C_VERSION_SIZE )
+#define  ATMEGA_I2C_STATUS_SIZE			2
+#define  ATMEGA_I2C_CURRENTSTATE_REG		( ATMEGA_I2C_STATUS_REG + ATMEGA_I2C_STATUS_SIZE )
+#define  ATMEGA_I2C_CURRENTSTATE_SIZE		1
+#define  ATMEGA_I2C_NEXTSTATE_REG		( ATMEGA_I2C_CURRENTSTATE_REG + ATMEGA_I2C_CURRENTSTATE_SIZE )
+#define  ATMEGA_I2C_NEXTSTATE_SIZE		1
+#define  ATMEGA_I2C_ADC0_REG			( ATMEGA_I2C_NEXTSTATE_REG + ATMEGA_I2C_NEXTSTATE_SIZE )
+#define  ATMEGA_I2C_ADC0_SIZE			2
+#define  ATMEGA_I2C_ADC1_REG			( ATMEGA_I2C_ADC0_REG + ATMEGA_I2C_ADC0_SIZE )
+#define  ATMEGA_I2C_ADC1_SIZE			2
+#define  ATMEGA_I2C_ADC2_REG			( ATMEGA_I2C_ADC1_REG + ATMEGA_I2C_ADC1_SIZE )
+#define  ATMEGA_I2C_ADC2_SIZE			2
+#define  ATMEGA_I2C_ADC3_REG			( ATMEGA_I2C_ADC2_REG + ATMEGA_I2C_ADC2_SIZE )
+#define  ATMEGA_I2C_ADC3_SIZE			2
+#define  ATMEGA_I2C_ALARM_REG			( ATMEGA_I2C_ADC3_REG + ATMEGA_I2C_ADC3_SIZE )
+#define  ATMEGA_I2C_ALARM_SIZE			4
+#define  ATMEGA_I2C_CS_REG			( ATMEGA_I2C_ALARM_REG + ATMEGA_I2C_ALARM_SIZE )
+#define  ATMEGA_I2C_CS_SIZE			2
+
+// MSP write registers
+#define  ATMEGA_I2C_WRITE_REG_BASE		0x00
+#define  ATMEGA_I2C_REREAD_REG_BASE		0x1a
+#define  ATMEGA_I2C_EXCHANGE_REG		ATMEGA_I2C_WRITE_REG_BASE
+#define  ATMEGA_I2C_EXCHANGE_SIZE		sizeof(struct atmega_exchange_table)
+#define  ATMEGA_I2C_AVAILABLE_REG		( ATMEGA_I2C_EXCHANGE_REG + ATMEGA_I2C_EXCHANGE_SIZE )
+#define  ATMEGA_I2C_AVAILABLE_SIZE		1
+
+extern int atmega_write_value( unsigned int reg, unsigned char *value, int size );
+extern int atmega_write_table( struct  atmega_exchange_table * );
+extern int atmega_read_value( unsigned int reg, unsigned long *value, int size );
+
+#endif /* _LINUX_ATMEGA_H */

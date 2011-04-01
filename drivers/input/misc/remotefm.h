@@ -1,0 +1,23 @@
+#ifndef _REMOTEFM_H_
+#define _REMOTEFM_H_
+
+
+// ioctl
+enum {	
+	STOP_READ_THREAD = 0,
+	START_READ_THREAD,
+
+	READ_REGS,
+	WRITE_REGS,
+	TOGGLE_REGS,
+	SET_LED_ON,
+	SET_LED_OFF,
+	REMOTE_LOCK,
+};
+
+#define LED_HOLD		0x1000
+#define LED_RECORD		0x2000
+#define LED_MP3			0x4000
+#define LED_FM			0x8000
+
+#endif //_REMOTEFM_H_
